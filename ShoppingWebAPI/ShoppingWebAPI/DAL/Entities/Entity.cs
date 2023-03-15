@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShoppingWebAPI.Entities
+namespace ShoppingWebAPI.DAL.Entities
 {
     public class Entity
     {
