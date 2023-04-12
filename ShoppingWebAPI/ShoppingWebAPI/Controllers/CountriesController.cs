@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingWebAPI.DAL;
 using ShoppingWebAPI.DAL.Entities;
-using System.Data.Entity.Infrastructure;
 using DbUpdateException = Microsoft.EntityFrameworkCore.DbUpdateException;
 
 namespace ShoppingWebAPI.Controllers
@@ -24,9 +22,9 @@ namespace ShoppingWebAPI.Controllers
         public async Task<ActionResult<IEnumerable<Country>>> GetCountries()
         {
             var countries = await _context.Countries.ToListAsync(); // Select * From Countries
-            
+
             if (countries == null) return NotFound();
-                
+
             return countries;
         }
 
