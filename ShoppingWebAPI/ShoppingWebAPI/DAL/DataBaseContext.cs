@@ -7,7 +7,6 @@ namespace ShoppingWebAPI.DAL
     {
         public DataBaseContext(DbContextOptions<DataBaseContext> options) : base(options)
         {
-            
         }
 
         public DbSet<Country> Countries { get; set; }
