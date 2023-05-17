@@ -18,10 +18,17 @@ namespace WebPages.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var url = _configuration["Api:CategoriesUrl"];
-            var json = await _httpClient.CreateClient().GetStringAsync(url);
-            List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(json);
-            return View(categories);
+            try
+            {
+                var url = _configuration["Api:CategoriesUrl"];
+                var json = await _httpClient.CreateClient().GetStringAsync(url);
+                List<Category> categories = JsonConvert.DeserializeObject<List<Category>>(json);
+                return View(categories);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }        
         }
 
         [HttpGet]
@@ -34,24 +41,46 @@ namespace WebPages.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
-            var url = _configuration["Api:CategoriesCreateUrl"];
-            await _httpClient.CreateClient().PostAsJsonAsync(url, category);
-            return RedirectToAction("Index");
+            try
+            {
+                var url = _configuration["Api:CategoriesCreateUrl"];
+                await _httpClient.CreateClient().PostAsJsonAsync(url, category);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            return View(await GetCategoriesById(id));
+            try
+            {
+                return View(await GetCategoriesById(id));
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid? id, Category category)
         {
-            var url = String.Format("{0}/{1}", _configuration["Api:CategoriesEditUrl"], id);
-            await _httpClient.CreateClient().PutAsJsonAsync(url, category);
-            return RedirectToAction("Index");
+            try
+            {
+                var url = String.Format("{0}/{1}", _configuration["Api:CategoriesEditUrl"], id);
+                await _httpClient.CreateClient().PutAsJsonAsync(url, category);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }
+
         }
 
         [HttpGet]
@@ -64,14 +93,28 @@ namespace WebPages.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var url = String.Format("{0}/{1}", _configuration["Api:CategoriesDeleteUrl"], id);
-            await _httpClient.CreateClient().DeleteAsync(url);
-            return RedirectToAction("Index");
+            try
+            {
+                var url = String.Format("{0}/{1}", _configuration["Api:CategoriesDeleteUrl"], id);
+                await _httpClient.CreateClient().DeleteAsync(url);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }
         }
 
         public async Task<IActionResult> Details(Guid? id)
         {
-            return View(await GetCategoriesById(id));
+            try
+            {
+                return View(await GetCategoriesById(id));
+            }
+            catch (Exception ex)
+            {
+                return View("Error", ex);
+            }
         }
 
         private async Task<Category> GetCategoriesById(Guid? id)
