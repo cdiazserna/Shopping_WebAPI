@@ -41,10 +41,7 @@ namespace WebPages.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid? id)
         {
-            var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
-            var json = await _httpClient.CreateClient().GetStringAsync(url);
-            Category category = JsonConvert.DeserializeObject<Category>(json);
-            return View(category);
+            return View(await GetCategoriesById(id));
         }
 
         [HttpPost]
@@ -59,10 +56,7 @@ namespace WebPages.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid? id)
         {
-            var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
-            var json = await _httpClient.CreateClient().GetStringAsync(url);
-            Category category = JsonConvert.DeserializeObject<Category>(json);
-            return View(category);
+            return View(await GetCategoriesById(id));
         }
 
         [HttpPost, ActionName("Delete")]
@@ -76,19 +70,13 @@ namespace WebPages.Controllers
 
         public async Task<IActionResult> Details(Guid? id)
         {
-            var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
-            var json = await _httpClient.CreateClient().GetStringAsync(url);
-            Category category = JsonConvert.DeserializeObject<Category>(json);
-            return View(category);
+            return View(await GetCategoriesById(id));
         }
 
-
-        //private async Task<Category> GetCategories(Guid? id)
-        //{
-        //    var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
-        //    var json = await _httpClient.CreateClient().GetStringAsync(url);
-        //    var cat = JsonConvert.DeserializeObject<Category>(json);
-        //    return cat;
-        //}
+        private async Task<Category> GetCategoriesById(Guid? id)
+        {
+            var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
+            return JsonConvert.DeserializeObject<Category>(await _httpClient.CreateClient().GetStringAsync(url));
+        }
     }
 }
