@@ -74,6 +74,15 @@ namespace WebPages.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Details(Guid? id)
+        {
+            var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
+            var json = await _httpClient.CreateClient().GetStringAsync(url);
+            Category category = JsonConvert.DeserializeObject<Category>(json);
+            return View(category);
+        }
+
+
         //private async Task<Category> GetCategories(Guid? id)
         //{
         //    var url = String.Format("https://localhost:7007/api/Categories/Get/{0}", id);
